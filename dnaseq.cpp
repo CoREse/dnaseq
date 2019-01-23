@@ -10,7 +10,7 @@ const char DNAC[]=//complements
     char(48), char(49), char(50), char(51), char(52), char(53), char(54), char(55), char(56), char(57), char(58), char(59), char(60), char(61), char(62), char(63), 
     char(64), 'T', char(66), 'G', char(68), char(69), char(70), 'C', char(72), char(73), char(74), char(75), char(76), char(77), char(78), char(79), 
     char(80), char(81), char(82), char(83), 'A', char(85), char(86), char(87), char(88), char(89), char(90), char(91), char(92), char(93), char(94), char(95), 
-    char(96), 'T', char(98), 'g', char(100), char(101), char(102), 'c', char(104), char(105), char(106), char(107), char(108), char(109), char(110), char(111), 
+    char(96), 't', char(98), 'g', char(100), char(101), char(102), 'c', char(104), char(105), char(106), char(107), char(108), char(109), char(110), char(111), 
     char(112), char(113), char(114), char(115), 'a', char(117), char(118), char(119), char(120), char(121), char(122), char(123), char(124), char(125), char(126), char(127), 
     char(128), char(129), char(130), char(131), char(132), char(133), char(134), char(135), char(136), char(137), char(138), char(139), char(140), char(141), char(142), char(143), 
     char(144), char(145), char(146), char(147), char(148), char(149), char(150), char(151), char(152), char(153), char(154), char(155), char(156), char(157), char(158), char(159), 
