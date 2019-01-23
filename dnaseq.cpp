@@ -72,3 +72,24 @@ unsigned DNASeq::getLength()
     }
     return Length;
 }
+
+DNASeq& DNASeq::operator=(const DNASeq& B)
+{
+    MaxLength=B.MaxLength;
+    if (Size<B.Size)
+    {
+        if (seq!=nullptr) free(seq);
+        seq=(char*) malloc(B.Size);
+    }
+    Size=B.Size;
+    if (rc != nullptr)
+        free(rc);
+    strcpy(seq,B.seq);
+    Length=strlen(seq);
+}
+
+DNASeq::DNASeq(const DNASeq& B)
+{
+    DNASeq(B.Size);
+    *this=B;
+}

@@ -10,7 +10,6 @@ class DNASeq
     ~DNASeq();
     void makeRC();
     unsigned getLength();
-    private:
     DNASeq(const DNASeq&);
     DNASeq& operator=(const DNASeq&);
 };
