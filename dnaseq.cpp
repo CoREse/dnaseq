@@ -93,3 +93,16 @@ DNASeq::DNASeq(const DNASeq& B)
     DNASeq(B.Size);
     *this=B;
 }
+
+DNASeq& DNASeq::move(DNASeq& B)
+{
+    if (seq!=nullptr) free(seq);
+    if (rc!=nullptr) free(rc);
+    MaxLength=B.MaxLength;
+    Size=B.Size;
+    Length=B.Length;
+    seq=B.seq;
+    B.seq=nullptr;
+    rc=B.rc;
+    B.rc=nullptr;
+}

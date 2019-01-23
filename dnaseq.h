@@ -12,6 +12,7 @@ class DNASeq
     unsigned getLength();
     DNASeq(const DNASeq&);
     DNASeq& operator=(const DNASeq&);
+    DNASeq& move(DNASeq& B);//move B to this
 };
 
 #endif
