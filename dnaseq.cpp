@@ -66,6 +66,7 @@ void DNASeq::makeRC()
 
 unsigned DNASeq::getLength()
 {
+    if (seq==nullptr) return 0;
     if (Length==0xffffffff)
     {
         Length=strlen(seq);
