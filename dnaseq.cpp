@@ -41,7 +41,7 @@ const char DNAC[]=//complements
 };*/
 
 DNASeq::DNASeq(unsigned MaxLength)
-:MaxLength(MaxLength),seq(nullptr),rc(nullptr),Length(0xffffffff)
+:MaxLength(MaxLength),seq(nullptr),rc(nullptr)
 {
     Size=MaxLength+1;
     seq=(char*) malloc(Size);
@@ -57,7 +57,7 @@ void DNASeq::makeRC()
 {
     if (rc==nullptr) rc=(char*) malloc(Size);
     if (seq==nullptr) return;
-    if (Length==0xffffffff) Length=strlen(seq);
+    unsigned Length=strlen(seq);
     for (unsigned i=0;i<Length;++i)
     {
         rc[i]=DNAC[seq[Length-1-i]];
@@ -67,11 +67,7 @@ void DNASeq::makeRC()
 unsigned DNASeq::getLength()
 {
     if (seq==nullptr) return 0;
-    if (Length==0xffffffff)
-    {
-        Length=strlen(seq);
-    }
-    return Length;
+    return strlen(seq);
 }
 
 DNASeq& DNASeq::operator=(const DNASeq& B)
@@ -86,7 +82,6 @@ DNASeq& DNASeq::operator=(const DNASeq& B)
     if (rc != nullptr)
         free(rc);
     strcpy(seq,B.seq);
-    Length=strlen(seq);
 }
 
 DNASeq::DNASeq(const DNASeq& B)
@@ -101,7 +96,6 @@ DNASeq& DNASeq::move(DNASeq& B)
     if (rc!=nullptr) free(rc);
     MaxLength=B.MaxLength;
     Size=B.Size;
-    Length=B.Length;
     seq=B.seq;
     B.seq=nullptr;
     rc=B.rc;

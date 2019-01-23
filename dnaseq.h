@@ -3,7 +3,7 @@
 
 class DNASeq
 {
-    unsigned MaxLength,Size,Length;
+    unsigned MaxLength,Size;
     public:
     char * seq, *rc;//seq and reversed complemented seq
     DNASeq(unsigned MaxLength=1000000);
