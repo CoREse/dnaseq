@@ -40,24 +40,63 @@ const char DNAC[]=//complements
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 };*/
 
-DNASeq::DNASeq(unsigned MaxLength)
-:MaxLength(MaxLength),seq(nullptr),rc(nullptr)
+DNASeq::DNASeq(unsigned RL)
+:ReservedLength(RL),Size(0),seq(nullptr),rc(nullptr)
 {
-    Size=MaxLength+1;
-    seq=(char*) malloc(Size);
+    if (ReservedLength!=0)
+    {
+        Size=ReservedLength+1;
+        seq=(char*) malloc(Size);
+    }
+}
+
+DNASeq::DNASeq(const char * Bases, unsigned Max)
+:ReservedLength(0),Size(0),seq(nullptr),rc(nullptr)
+{
+    unsigned Length=strlen(Bases);
+    if (Max!=0) Length=Length>Max?Max:Length;
+    if (Length>=Size)
+    {
+        Size=Length+1;
+        seq=(char*)realloc(seq,Size);
+    }
+    memcpy(seq,Bases,Length);
+    seq[Length]='\0';
+}
+
+DNASeq::DNASeq(std::string Bases, unsigned Max)
+:DNASeq(Bases.c_str(),Max)
+{
 }
 
 DNASeq::~DNASeq()
 {
-    if (seq!=nullptr) free(seq);
-    if (rc!=nullptr) free(rc);
+    try
+    {
+        if (seq!=nullptr) free(seq);
+        if (rc!=nullptr) free(rc);
+    }
+    catch(...)
+    {
+        return;
+    }
+}
+
+void DNASeq::reserve(unsigned RL)
+{
+    ReservedLength=RL;
+    if (Size<=ReservedLength)
+    {
+        Size=ReservedLength+1;
+        seq=(char*) realloc(seq,Size);
+    }
 }
 
 void DNASeq::makeRC()
 {
-    if (rc==nullptr) rc=(char*) malloc(Size);
     if (seq==nullptr) return;
     unsigned Length=strlen(seq);
+    rc=(char*) realloc(rc,Length+1);
     for (unsigned i=0;i<Length;++i)
     {
         rc[i]=DNAC[seq[Length-1-i]];
@@ -72,21 +111,24 @@ unsigned DNASeq::getLength()
 
 DNASeq& DNASeq::operator=(const DNASeq& B)
 {
-    MaxLength=B.MaxLength;
+    ReservedLength=B.ReservedLength;
     if (Size<B.Size)
     {
-        if (seq!=nullptr) free(seq);
-        seq=(char*) malloc(B.Size);
+        seq=(char*) realloc(seq,B.Size);
+        Size=B.Size;
     }
-    Size=B.Size;
-    if (rc != nullptr)
-        free(rc);
-    strcpy(seq,B.seq);
+    if (B.seq!=nullptr) strcpy(seq,B.seq);
+    if (B.rc != nullptr)
+    {
+        unsigned RCL=strlen(B.rc)+1;
+        rc=(char*)realloc(rc,RCL);
+        strcpy(rc,B.rc);
+    }
 }
 
 DNASeq::DNASeq(const DNASeq& B)
 {
-    DNASeq(B.Size);
+    DNASeq(B.ReservedLength);
     *this=B;
 }
 
@@ -94,8 +136,10 @@ DNASeq& DNASeq::move(DNASeq& B)
 {
     if (seq!=nullptr) free(seq);
     if (rc!=nullptr) free(rc);
-    MaxLength=B.MaxLength;
+    ReservedLength=B.ReservedLength;
+    B.ReservedLength=0;
     Size=B.Size;
+    B.Size=0;
     seq=B.seq;
     B.seq=nullptr;
     rc=B.rc;
